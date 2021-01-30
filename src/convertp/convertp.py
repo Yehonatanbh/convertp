@@ -1,30 +1,61 @@
-from .convertors.mp3_convertor import MP3Convertor
-from .sniffer import Sniffer
-from .rtp_handler import detect_payload_type, strip_rtp_header
-from .decoders.type_to_decoder_map import get_decoder_for_data_type
-from tempfile import gettempdir
 import os
+from tempfile import gettempdir
+
+from .sniffer import Sniffer
+from .saver import Saver
+from .rtp_utils import detect_payload_type, strip_rtp_header
+from .loaders.type_to_loader import get_loader
 
 
 class ConveRTP:
-    def __init__(self, dst_path, src_path=None, interface=None):
+    # The amount of packet to buffer together before decoding it as mp3
+    packet_buffer_size = 50
+
+    def __init__(self, dst_path, pcap_path=None, interface=None):
         self.dst_path = dst_path
         self._tmp_raw_file = os.path.join(gettempdir(), 'temp_audio.raw')
+        self._raw_buffer = bytes()
 
-        self.sniffer = Sniffer(display_filter='rtp.payload',
-                               path=src_path,
-                               interface=interface)
-        self.convertor = MP3Convertor(src_path=self._tmp_raw_file,
-                                      dst_path=dst_path)
+        self.sniffer = Sniffer(display_filter='rtp.payload', path=pcap_path, interface=interface)
         payload_type = detect_payload_type(next(self.sniffer))
-        self.decoder = get_decoder_for_data_type(payload_type)()
+        self._loader = get_loader(payload_type)
+
+        self._setup_audio_buffer()
+        self.saver = Saver(self._tmp_raw_file)
+
+    def _setup_audio_buffer(self):
+        self._audio_buffer = bytes()
 
     def convert(self):
-        self._write_raw()
-        self.convertor.convert()
+        self.load_all_packets()
+        self.write_raw()
+        self.saver.save(dst_path=self.dst_path)
 
-    def _write_raw(self):
-        raw_audio_packets = [self.decoder.decode(strip_rtp_header(packet)) for packet in self.sniffer]
-        raw_audio = bytes().join(raw_audio_packets)
+    # def get_rtp_payloads(self, amount=1):
+    #     payloads_buffer = bytes()
+    #     for _ in range(amount):
+    #         try:
+    #             packet = next(self.sniffer)
+    #         except StopIteration:
+    #             break
+    #         payloads_buffer += strip_rtp_header(packet)
+    #     return payloads_buffer
+
+    def load_all_packets(self):
+        """
+        loads the next packet in the cap given, process it and return the raw audio data.
+        :return:
+        """
+        # payloads = self.get_rtp_payloads(amount=50)
+        # while payloads:
+        #     self._audio_buffer += self._loader.load(payloads)
+        #     payloads = self.get_rtp_payloads(amount=50)
+        for packet in self.sniffer:
+            self._audio_buffer += strip_rtp_header(packet)
+        self._raw_buffer += self._loader.load(self._audio_buffer)
+
+    def write_raw(self):
+        if not self._raw_buffer:
+            return False
         with open(self._tmp_raw_file, 'wb') as f:
-            f.write(raw_audio)
+            f.write(self._raw_buffer)

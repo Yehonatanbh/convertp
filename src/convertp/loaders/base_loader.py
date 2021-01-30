@@ -1,5 +1,5 @@
-class BaseDecoder:
-    def decode(self, rtp_payload):
+class BaseLoader:
+    def load(self, payload):
         """
         converts the data given to raw audio data
         """
