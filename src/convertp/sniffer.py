@@ -2,7 +2,7 @@ import pyshark
 
 
 class Sniffer:
-    def __init__(self, display_filter, path=None, interface=None):
+    def __init__(self, display_filter='', path=None, interface=None):
         self._validate_input(path=path, interface=interface)
         self._from_file = bool(path)
         self._setup_capture(display_filter, interface, path)

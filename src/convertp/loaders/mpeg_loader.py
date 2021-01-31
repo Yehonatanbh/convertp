@@ -7,7 +7,6 @@ from .base_loader import BaseLoader
 
 class MP3Loader(BaseLoader):
     def load(self, rtp_payload):
-        print(len(rtp_payload))
         # The default MTU is 1500 bytes
         with SpooledTemporaryFile(max_size=1500) as temp_file:
             temp_file.write(rtp_payload)

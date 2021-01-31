@@ -2,7 +2,7 @@ from pydub import AudioSegment
 
 
 class Saver:
-    SUPPORTED_FORMATS = ['mp3', 'wav', ]
+    SUPPORTED_FORMATS = ['mp3', 'wav', 'raw', 'ogg']
 
     def __init__(self, src_raw_file: str, frame_rate=44100, sample_width=2, n_channels=2):
         self.src_path = src_raw_file
