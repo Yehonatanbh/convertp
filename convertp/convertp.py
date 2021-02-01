@@ -14,7 +14,7 @@ class ConveRTP:
         self.from_video = from_video
 
         self.dst_path = dst_file
-        self._tmp_raw_file = os.path.join(gettempdir(), 'temp_audio.raw')
+        self._tmp_raw_file = os.path.join(gettempdir(), 'convertp_temp_audio.raw')
         self._raw_buffer = bytes()
 
         pcap_path = pcap_path or get_pcap_file_windows()
