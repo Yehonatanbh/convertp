@@ -23,6 +23,6 @@ def assert_file_format(file_path, _format):
 )
 def test_convertp(work_dir, pcap_path, output_format, from_video):
     exported = path.join(work_dir, f'exported.{output_format}')
-    conv = ConveRTP(dst_path=exported, pcap_path=pcap_path, from_video=from_video)
+    conv = ConveRTP(dst_file=exported, pcap_path=pcap_path, from_video=from_video)
     conv.convert()
     assert_file_format(exported, output_format)

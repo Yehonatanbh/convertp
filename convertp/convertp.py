@@ -10,10 +10,10 @@ from .loaders.type_to_loader import get_loader_from_payload_type
 
 
 class ConveRTP:
-    def __init__(self, dst_path, pcap_path=None, from_video=False):
+    def __init__(self, dst_file, pcap_path=None, from_video=False):
         self.from_video = from_video
 
-        self.dst_path = dst_path
+        self.dst_path = dst_file
         self._tmp_raw_file = os.path.join(gettempdir(), 'temp_audio.raw')
         self._raw_buffer = bytes()
 
