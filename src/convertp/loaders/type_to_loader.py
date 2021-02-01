@@ -6,7 +6,7 @@ _rtp_type_to_decoder = {
 }
 
 
-def get_loader(data_type: int) -> BaseLoader:
+def get_loader_from_payload_type(data_type: int) -> BaseLoader:
     if data_type not in _rtp_type_to_decoder.keys():
         raise NotImplementedError(f"The payload type {data_type} is not supported yet")
     decoder_cls = _rtp_type_to_decoder[data_type]
