@@ -18,8 +18,8 @@ class RTPSniffer:
             raise ValueError("You must specify either a path to a cap file or an interface to sniff on.")
 
     def __iter__(self):
-        iter = self._cap.__iter__() if self._from_file else self._cap.sniff_continuously()
-        for packet in iter:
+        iterator = self._cap.__iter__() if self._from_file else self._cap.sniff_continuously()
+        for packet in iterator:
             # for some reason the display_filter doesn't filter all the right packets
             if hasattr(packet, "rtp") and hasattr(packet.rtp, "payload") and hasattr(packet.rtp, "ssrc"):
                 yield packet
