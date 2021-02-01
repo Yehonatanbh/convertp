@@ -1,7 +1,7 @@
 import pyshark
 
 
-class RTPSniffer:
+class RTPPcapReader:
     def __init__(self, display_filter='rtp.payload', path=None, interface=None):
         self._validate_input(path=path, interface=interface)
         self._from_file = bool(path)
