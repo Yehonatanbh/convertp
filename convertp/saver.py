@@ -28,7 +28,8 @@ class Saver:
             dst_path += f'.{file_format}'
         return self._save_as(dst_path, file_format)
 
-    def get_format_from_path(self, file_path):
+    @classmethod
+    def get_format_from_path(cls, file_path):
         splitted_path = file_path.split('.')
         if len(splitted_path) <= 1:
             raise ValueError("No file format was specified, and no file extension was found.")
