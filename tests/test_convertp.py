@@ -15,7 +15,7 @@ def assert_file_format(file_path, _format):
 
 @pytest.mark.parametrize(
     'output_format',
-    ['mp3', 'wav']
+    ['mp3', 'wav', 'ogg']
 )
 @pytest.mark.parametrize(
     'pcap_path,from_video',
