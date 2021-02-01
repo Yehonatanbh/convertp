@@ -5,6 +5,7 @@ from tempfile import gettempdir
 from .rtp_sniffer import RTPSniffer
 from .saver import Saver
 from .rtp_utils import detect_payload_type, strip_rtp_header, get_audio_ssrc
+from .windows_utils import get_pcap_file_windows
 from .loaders.type_to_loader import get_loader_from_payload_type
 
 
@@ -16,6 +17,7 @@ class ConveRTP:
         self._tmp_raw_file = os.path.join(gettempdir(), 'temp_audio.raw')
         self._raw_buffer = bytes()
 
+        pcap_path = pcap_path or get_pcap_file_windows()
         self.sniffer = self.get_sniffer(pcap_path)
         self._loader = self.get_loader()
 
