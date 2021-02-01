@@ -37,12 +37,11 @@ class ConveRTP:
         self.saver.save(dst_path=self.dst_path)
 
     def load_all_packets(self):
-        # TODO: bytes().join([list comprehension])
-        payloads = bytes()
-        for packet in self.sniffer:
-            payloads += strip_rtp_header(packet)
+        payloads = bytes().join([strip_rtp_header(packet) for packet in self.sniffer])
         if payloads:
             self._raw_buffer += self._loader.load(payloads)
+        else:
+            raise ValueError('No packets found :(')
 
     def write_raw(self):
         if not self._raw_buffer:
