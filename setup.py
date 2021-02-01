@@ -8,7 +8,7 @@ def get_long_description():
 
 setup(
     name='convertp',
-    version='0.1',
+    version='1.0',
     author='yehon',
     author_email='yehonatanbh1@gmail.com',
     description='Convert RTP stream to audio files.',
