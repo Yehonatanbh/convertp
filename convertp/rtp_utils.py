@@ -13,9 +13,9 @@ def detect_payload_type(packet: pyshark.packet.packet.Packet) -> int:
     return int(packet.rtp.p_type)
 
 
-def get_ssrc_to_length(rtp_packet_generator: Iterator[pyshark.packet.packet.Packet]):
+def get_ssrc_to_length(rtp_packet_iterator: Iterator[pyshark.packet.packet.Packet]):
     ssrc_to_packet_length = defaultdict(list)
-    for packet in rtp_packet_generator:
+    for packet in rtp_packet_iterator:
         ssrc_to_packet_length[packet.rtp.ssrc].append(int(packet.captured_length))
     return ssrc_to_packet_length
 
@@ -25,6 +25,12 @@ def get_avg_length_to_ssrc(ssrc_to_packet_length):
 
 
 def get_audio_ssrc(rtp_packet_generator: Iterator[pyshark.packet.packet.Packet]):
+    """
+    Reads all the packets in the iterator given, and maps each ssrc to its average packet length.
+    Then returns the ssrc Whom his average is lower.
+    :return: the audio ssrc
+    :rtype: str
+    """
     ssrc_to_packet_length = get_ssrc_to_length(rtp_packet_generator)
     avg_length_to_ssrc = get_avg_length_to_ssrc(ssrc_to_packet_length)
     return avg_length_to_ssrc[min(avg_length_to_ssrc.keys())]
