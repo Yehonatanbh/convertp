@@ -14,7 +14,6 @@ setup(
     description='Convert RTP stream to audio files.',
     long_description=get_long_description(),
     packages=['convertp'],
-    # url='https://github.com/Yehonatanbh/convertp',
     license='GNU General Public License v2.0',
     install_requires=['pyshark', 'pydub'],
     python_requires='>=3.8.5'

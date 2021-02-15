@@ -31,7 +31,7 @@ class RTPPcapReader:
         """
         iterator = self._cap.__iter__() if self._from_file else self._cap.sniff_continuously()
         for packet in iterator:
-            # For some reason the display_filter includes more packets than he needs.
+            # For some reason the display_filter includes more packets than it needs.
             if hasattr(packet, "rtp") and hasattr(packet.rtp, "payload") and hasattr(packet.rtp, "ssrc"):
                 yield packet
 

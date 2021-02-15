@@ -1,5 +1,5 @@
 from .base_loader import BaseLoader
-from .mpeg_loader import MP3Loader
+from .mp3_loader import MP3Loader
 
 _rtp_type_to_decoder = {
     14: MP3Loader,
