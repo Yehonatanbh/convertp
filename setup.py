@@ -16,5 +16,6 @@ setup(
     packages=find_packages(),
     license='GNU General Public License v2.0',
     install_requires=['pyshark', 'pydub'],
-    python_requires='>=3.8.5'
+    scripts=['bin/convertp'],
+    python_requires='>=3.8.5',
 )
