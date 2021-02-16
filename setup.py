@@ -13,7 +13,7 @@ setup(
     author_email='yehonatanbh1@gmail.com',
     description='Convert RTP stream to audio files.',
     long_description=get_long_description(),
-    packages=['convertp'],
+    packages=find_packages(),
     license='GNU General Public License v2.0',
     install_requires=['pyshark', 'pydub'],
     python_requires='>=3.8.5'
